@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Погода в Ульяновске</string>
+    <string name="cityWeather" translatable="true">Ульяновск</string>
+    <string name="weather" translatable="true">Облачно</string>
+    <string name="wind1" translatable="true">13 м/с</string>
+    <string name="choose_your_city">Выберите ваш город</string>
+    <string name="welcome_to_weather_forecast">Добро пожаловать в прогноз погоды от Старка</string>
+    <string name="or_type">или введите</string>
+    <string name="type_your_city">введите город</string>
+    <string name="CelsiusFahrenheit">Выберите единицу измерения</string>
+    <string name="fahrenheit">Фаренгейт</string>
+    <string name="celsius">Цельсий</string>
+    <string name="Humidity">Влажность</string>
+    <string name="WindSpeed">Скорость ветра</string>
+</resources>

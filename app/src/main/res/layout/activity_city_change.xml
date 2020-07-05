@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bw"
+    tools:context=".presentation.city.CityChangeActivity">
+
+    <Button
+        android:id="@+id/sendData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:background="@drawable/rounder_button"
+        android:text="@string/ok"
+        android:textColor="@color/colorText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="60dp"
+        />
+
+    <EditText
+        android:id="@+id/typeCity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/type_your_city"
+        android:inputType="text"
+        android:textColor="@color/colorText"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textTypeCity"
+        android:layout_marginTop="60dp"
+
+        />
+
+
+    <RadioGroup
+        android:id="@+id/celsiusFahrenheit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/typeCity"
+        android:layout_marginTop="30dp"
+        android:checkedButton="@id/cels"
+        >
+
+        <RadioButton
+            android:id="@+id/cels"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/celsius" />
+
+        <RadioButton
+            android:id="@+id/fahr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fahrenheit" />
+
+    </RadioGroup>
+
+    <Switch
+        android:id="@+id/windSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/WindSpeed"
+        app:layout_constraintStart_toEndOf="@id/celsiusFahrenheit"
+        app:layout_constraintTop_toTopOf="@id/celsiusFahrenheit"
+        android:layout_marginTop="2dp"
+        android:checked="true"
+        android:layout_marginStart="100dp"/>
+
+    <Switch
+        android:id="@+id/humidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Humidity"
+        app:layout_constraintStart_toEndOf="@id/celsiusFahrenheit"
+        android:layout_marginStart="100dp"
+        android:checked="true"
+        app:layout_constraintTop_toBottomOf="@id/windSpeed"
+        android:layout_marginTop="6dp" />
+
+
+
+    <Spinner
+        android:id="@+id/spinner"
+        style="@style/spinner_style"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chooseYourCity"
+        android:layout_marginTop="50dp"
+        />
+
+    <TextView
+        android:id="@+id/chooseYourCity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="@string/choose_your_city"
+        android:textAlignment="center"
+        android:textColor="@color/colorDarkGrey"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textTypeCity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/or_type"
+        android:textAlignment="center"
+        android:textColor="@color/colorDarkGrey"
+        android:textSize="40sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/spinner"
+        android:layout_marginTop="100dp"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

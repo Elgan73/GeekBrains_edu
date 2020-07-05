@@ -6,7 +6,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.Switch;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,8 +19,10 @@ import com.stark.geekbrains_edu.presentation.weather.WeatherActivity;
 public class CityChangeActivity extends AppCompatActivity {
 
     Button sendData;
+    RadioButton celsFahr;
+    Switch windSpeed;
     String[] dataSpinner = {"", "Ulyanovsk", "Moscow", "Vladivostok", "Voronezh"};
-    String city = "";
+    int[] temp = {20, 12, 15, 14, 13, 0, 7};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,16 +38,31 @@ public class CityChangeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CityChangeActivity.this, WeatherActivity.class);
+
                 if (typeCity.getText().toString().equals("")) {
                     String c = spinner.getSelectedItem().toString();
-                    CityChangePresenter.getInstance().setCity(c);
-                    intent.putExtra("selectedCity", c);
+                    if (!spinner.getSelectedItem().toString().equals("")) {
+                        CityChangePresenter.getInstance().setCity(c);
+                        intent.putExtra("selectedCity", c);
+                        intent.putExtra("tempCity", temp);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(CityChangeActivity.this, "Choose your city, dude!", Toast.LENGTH_LONG).show();
+                    }
+
+
                 } else {
-                    CityChangePresenter.getInstance().setCity(typeCity.getText().toString());
-                    intent.putExtra("selectedCity", typeCity.getText().toString());
+                    if(typeCity.getText() != null) {
+                        CityChangePresenter.getInstance().setCity(typeCity.getText().toString());
+                        intent.putExtra("selectedCity", typeCity.getText().toString());
+                        intent.putExtra("tempCity", temp);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(CityChangeActivity.this, "Choose your city, dude!", Toast.LENGTH_LONG).show();
+                    }
 
                 }
-                startActivity(intent);
+
             }
         });
     }
