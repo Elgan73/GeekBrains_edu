@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">Weather Forecast</string>
+    <string name="cityWeather" translatable="true">Ulyanovsk</string>
+    <string name="weather" translatable="true">Clouds</string>
+    <string name="temp" translatable="false">20%1$c</string>
+    <string name="temp1" translatable="false">18%1$c</string>
+    <string name="temp2" translatable="false">15%1$c</string>
+    <string name="temp3" translatable="false">13%1$c</string>
+    <string name="temp4" translatable="false">14%1$c</string>
+    <string name="temp5" translatable="false">10%1$c</string>
+    <string name="date26" translatable="false">26.06.2020</string>
+    <string name="wind1" translatable="true">13 m/s</string>
+    <string name="date27" translatable="false">27.06.2020</string>
+    <string name="date28" translatable="false">28.06.2020</string>
+    <string name="date29" translatable="false">29.06.2020</string>
+    <string name="date30" translatable="false">30.06.2020</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="BottomNav" translatable="false">City</string>
+    <string name="weatherBottomNav" translatable="false">Weather</string>
+    <string name="settingsBottomNav" translatable="false">Settings</string>
+    <string name="choose_your_city" translatable="true">Choose your city</string>
+    <string name="welcome_to_weather_forecast" translatable="true">Welcome to Weather Forecast</string>
+    <string name="or_type" translatable="true">or type</string>
+    <string name="type_your_city" translatable="true">type your city</string>
+    <string name="ok" translatable="false">OK</string>
+    <string name="CelsiusFahrenheit" translatable="true">Select a temperature display option</string>
+    <string name="fahrenheit" translatable="true">Fahrenheit</string>
+    <string name="celsius" translatable="true">Celsius</string>
+    <string name="Humidity" translatable="true">Humidity</string>
+    <string name="WindSpeed" translatable="true">Wind speed</string>
+    <string name="on_off" translatable="false">On/Off</string>
+    <string name="settings" translatable="false">Settings</string>
+    <string name="my_weather" translatable="false">My Weather</string>
+    <string name="change_city" translatable="false">Change city</string>
+    <string name="humidity" translatable="false">75%</string>
+</resources>

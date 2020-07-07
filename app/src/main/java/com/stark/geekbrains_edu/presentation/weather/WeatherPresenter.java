@@ -1,6 +1,10 @@
 package com.stark.geekbrains_edu.presentation.weather;
 
+import android.annotation.SuppressLint;
 import android.net.Uri;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class WeatherPresenter {
 
@@ -54,18 +58,14 @@ public class WeatherPresenter {
     }
 
     public String getDate() {
+                @SuppressLint("SimpleDateFormat")
+                SimpleDateFormat format = new SimpleDateFormat(" hh:mm  dd.MM.yyyy");
+                date = format.format(new Date());
+
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
 
-//    public static CityChangePresenter getInstance() {
-//        instance = instance != null ? instance : new CityChangePresenter();
-//        return instance;
-//
-//    }
     public static WeatherPresenter getInstance() {
         instance = instance != null ? instance : new WeatherPresenter();
         return instance;
