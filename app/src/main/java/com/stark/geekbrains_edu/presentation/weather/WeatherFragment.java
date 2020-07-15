@@ -4,10 +4,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.stark.geekbrains_edu.Model.WeatherModel;
 import com.stark.geekbrains_edu.R;
+
+import java.util.List;
 
 public class WeatherFragment extends Fragment {
 
@@ -16,6 +21,9 @@ public class WeatherFragment extends Fragment {
 
     private String mParam1;
     private String mParam2;
+    private List<WeatherModel> models;
+    public WeatherModel weatherModel = new WeatherModel();
+    private TextView city;
 
     public WeatherFragment() {
     }
@@ -41,6 +49,14 @@ public class WeatherFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_weather, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_weather, container, false);
+        city = rootView.findViewById(R.id.city);
+        city.setText(weatherModel.getCity());
+        RecyclerView recyclerView = rootView.findViewById(R.id.recyclerViewWeather);
+        WeatherAdapter weatherAdapter = new WeatherAdapter(getContext(), models);
+        recyclerView.setAdapter(weatherAdapter);
+
+
+        return rootView;
     }
 }

@@ -6,5 +6,20 @@
     android:layout_height="match_parent"
     android:background="@drawable/bw"
     android:id="@+id/frgmCont"
-    tools:context=".presentation.MainActivity"/>
+    tools:context=".presentation.MainActivity">
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:menu="@menu/bottom_navigation_menu"
+        android:background="@drawable/rounded_bottom_nav_menu"
+        app:itemIconTint="@color/colorText"
+        app:itemTextColor="@color/colorText"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
