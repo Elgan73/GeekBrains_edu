@@ -1,49 +1,56 @@
 package com.stark.geekbrains_edu.presentation;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.stark.geekbrains_edu.Model.WeatherModel;
 import com.stark.geekbrains_edu.R;
-import com.stark.geekbrains_edu.presentation.city.CityChangeActivity;
-import com.stark.geekbrains_edu.presentation.weather.WeatherActivity;
+import com.stark.geekbrains_edu.presentation.city.CityFragment;
+import com.stark.geekbrains_edu.presentation.weather.WeatherFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button cityChange;
-    Button myWeather;
+    MainPresenter mainPresenter = new MainPresenter();
+    List<WeatherModel> models = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        cityChange = findViewById(R.id.changeCity);
-        cityChange.setOnClickListener(new View.OnClickListener() {
+        mainPresenter.onStart(getSupportFragmentManager(), R.id.frgmCont, new CityFragment());
+//        setInitialData();
+        BottomNavigationView bnm = findViewById(R.id.bottomNavMenu);
+        bnm.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, CityChangeActivity.class);
-                startActivity(intent);
-            }
-        });
-        myWeather = findViewById(R.id.myWeather);
-        myWeather.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, WeatherActivity.class);
-                if(intent.getExtras() == null) {
-                    Toast.makeText(MainActivity.this, "Choose your city, dude", Toast.LENGTH_LONG).show();
-                } else {
-                    startActivity(intent);
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.city:
+                        CityFragment cityChangeFragment = new CityFragment();
+                        mainPresenter.onStart(getSupportFragmentManager(), R.id.frgmCont, cityChangeFragment);
+                        break;
+                    case R.id.weather:
+                        WeatherFragment weatherFragment = new WeatherFragment();
+                        mainPresenter.onStart(getSupportFragmentManager(), R.id.frgmCont, weatherFragment);
+                        break;
                 }
-
+                return false;
             }
         });
+
 
     }
 
+//    private void setInitialData() {
+//        models.add(new WeatherModel(18, "Samara", 35, 35.2, true, R.drawable.ic_058_storm, "30.07.2020"));
+//        models.add(new WeatherModel(19, "Lomi",50, 10, true, R.drawable.ic_032_wind, "31.07.2020"));
+//        models.add(new WeatherModel(20, "Berlin",65, 0.2, true, R.drawable.ic_048_snowing, "01.08.2020"));
+//        models.add(new WeatherModel(22, "Kuala",57, 5.2, true, R.drawable.ic_059_hot_weather, "02.08.2020"));
+//    }
 }

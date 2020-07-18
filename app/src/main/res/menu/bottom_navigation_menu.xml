@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/city"
+        android:enabled="true"
+        android:icon="@drawable/ic_city"
+        android:title="@string/BottomNav"/>
+
+    <item
+        android:id="@+id/weather"
+        android:enabled="true"
+        android:icon="@drawable/ic_weather"
+        android:title="@string/weatherBottomNav"/>
+
+
+</menu>
