@@ -11,7 +11,4 @@ public class CityPresenter {
         ft.replace(container, fragment);
         ft.commit();
     }
-
-
-
 }

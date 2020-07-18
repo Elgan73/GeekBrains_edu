@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bw"
+    android:background="#D4E4E8"
     >
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/sendData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,10 +18,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="80dp"
         />
-
-    <EditText
+<com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/textInputLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/textTypeCity"
+    android:layout_marginTop="30dp">
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/typeCity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,20 +36,15 @@
         android:inputType="text"
         android:textColor="@color/colorText"
         android:textSize="25sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textTypeCity"
-        android:layout_marginTop="60dp"
-
         />
-
+</com.google.android.material.textfield.TextInputLayout>
 
     <RadioGroup
         android:id="@+id/celsiusFahrenheit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/typeCity"
+        app:layout_constraintTop_toBottomOf="@id/textInputLayout"
         android:layout_marginTop="30dp"
         android:checkedButton="@id/cels"
         >
@@ -61,44 +63,20 @@
 
     </RadioGroup>
 
-    <Switch
-        android:id="@+id/windSpeed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/WindSpeed"
-        app:layout_constraintStart_toEndOf="@id/celsiusFahrenheit"
-        app:layout_constraintTop_toTopOf="@id/celsiusFahrenheit"
-        android:layout_marginTop="2dp"
-        android:checked="true"
-        android:layout_marginStart="100dp"/>
-
-    <Switch
-        android:id="@+id/humidity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/Humidity"
-        app:layout_constraintStart_toEndOf="@id/celsiusFahrenheit"
-        android:layout_marginStart="100dp"
-        android:checked="true"
-        app:layout_constraintTop_toBottomOf="@id/windSpeed"
-        android:layout_marginTop="6dp" />
-
-
-
     <Spinner
         android:id="@+id/spinner"
         style="@style/spinner_style"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/chooseYourCity"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         />
 
     <TextView
         android:id="@+id/chooseYourCity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:text="@string/choose_your_city"
         android:textAlignment="center"
         android:textColor="@color/colorDarkGrey"
@@ -118,7 +96,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/spinner"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="60dp"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
