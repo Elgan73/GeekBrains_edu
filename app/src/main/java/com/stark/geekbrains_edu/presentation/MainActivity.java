@@ -4,17 +4,12 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.stark.geekbrains_edu.Model.WeatherModel;
 import com.stark.geekbrains_edu.R;
 import com.stark.geekbrains_edu.presentation.city.CityFragment;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     MainPresenter mainPresenter = new MainPresenter();
-    List<WeatherModel> models = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,5 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
 
 }
