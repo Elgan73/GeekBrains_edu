@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#D4E4E8"
+    >
+
+    <View
+        android:id="@+id/viewPretty"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@drawable/header_color"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/settingsPretty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_baseline_settings_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"/>
+
+    <TextView
+        android:id="@+id/cityPretty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Milan"
+        android:textSize="30sp"
+        android:textColor="@color/colorText"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/expandCityPretty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/city_arrow"
+        app:layout_constraintStart_toEndOf="@id/cityPretty"
+        app:layout_constraintTop_toTopOf="@id/cityPretty"
+        android:layout_marginTop="6dp"
+        />
+
+    <TextView
+        android:id="@+id/datePretty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="17 november 2020 18:43"
+        android:textColor="@color/colorText"
+        app:layout_constraintTop_toBottomOf="@id/cityPretty"
+        app:layout_constraintStart_toStartOf="@id/cityPretty"/>
+
+    <TextView
+        android:id="@+id/tempPretty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorText"
+        android:text="+25"
+        android:textSize="80sp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="80dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/perceivedPretty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Perceived +26"
+        android:textColor="@color/colorText"
+        android:layout_marginStart="30dp"
+        app:layout_constraintStart_toStartOf="@id/tempPretty"
+        app:layout_constraintTop_toBottomOf="@id/tempPretty"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_058_storm"
+        app:layout_constraintStart_toEndOf="@id/tempPretty"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="55dp"
+        android:layout_marginStart="65dp"/>
+
+    <View
+        android:id="@+id/viewWithDetails"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/round_place"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toBottomOf="@id/viewPretty"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/precipitationPretty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5%"
+        android:textSize="35sp"
+        app:layout_constraintStart_toStartOf="@id/precipitationPrettyHint"
+        app:layout_constraintBottom_toTopOf="@id/precipitationPrettyHint"
+        app:layout_constraintEnd_toEndOf="@id/precipitationPrettyHint"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/humidityPretty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="75%"
+        android:textSize="35sp"
+        app:layout_constraintStart_toStartOf="@id/humidityPrettyHint"
+        app:layout_constraintBottom_toTopOf="@id/humidityPrettyHint"
+        app:layout_constraintEnd_toEndOf="@id/humidityPrettyHint"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/windSpeedPretty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5 m/s"
+        android:textSize="35sp"
+        app:layout_constraintStart_toStartOf="@id/windSpeedPrettyHint"
+        app:layout_constraintBottom_toTopOf="@id/windSpeedPrettyHint"
+        app:layout_constraintEnd_toEndOf="@id/windSpeedPrettyHint"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/precipitationPrettyHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Precipitation"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/viewWithDetails"
+        app:layout_constraintStart_toStartOf="@id/viewWithDetails"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/humidityPrettyHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Humidity"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/viewWithDetails"
+        app:layout_constraintStart_toEndOf="@id/precipitationPrettyHint"
+        android:layout_marginStart="70dp"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/windSpeedPrettyHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/WindSpeed"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/viewWithDetails"
+        app:layout_constraintStart_toEndOf="@id/humidityPrettyHint"
+        android:layout_marginStart="70dp"
+        android:layout_marginBottom="10dp"/>
+
+
+<!--    viewWithDetails-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewAnother"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/viewWithDetails"
+            app:layout_constraintTop_toBottomOf="@id/viewWithDetails"
+            android:layout_marginTop="16dp"
+
+            />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

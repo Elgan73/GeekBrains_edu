@@ -6,12 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
 import com.stark.geekbrains_edu.Model.WeatherModel;
 import com.stark.geekbrains_edu.R;
 import com.stark.geekbrains_edu.presentation.weather.WeatherFragment;
@@ -27,6 +27,7 @@ public class CityFragment extends Fragment {
     WeatherModel weatherModel = new WeatherModel();
     String[] dataSpinner = {"", "Ulyanovsk", "Moscow", "Vladivostok", "Voronezh"};
     CityPresenter cityPresenter = new CityPresenter();
+    TextInputEditText typeCity;
 
     public CityFragment() {
     }
@@ -58,7 +59,7 @@ public class CityFragment extends Fragment {
         final Spinner spinner = rootView.findViewById(R.id.spinner);
         spinner.setAdapter(adapter);
         spinner.setSelection(0);
-        final EditText typeCity = rootView.findViewById(R.id.typeCity);
+        typeCity = rootView.findViewById(R.id.typeCity);
         sendData = rootView.findViewById(R.id.sendData);
         sendData.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +68,8 @@ public class CityFragment extends Fragment {
                     String c = spinner.getSelectedItem().toString();
                     if (!spinner.getSelectedItem().toString().equals("")) {
                         weatherModel.setCity(c);
+//                        System.out.println(c + " !!!!!");
+                        System.out.println(weatherModel.getCity());
                         cityPresenter.navigate(getFragmentManager(), R.id.frgmCont, new WeatherFragment());
                     } else {
                         Snackbar snackbar = Snackbar.make(rootView, "Choose your city, dude!", Snackbar.LENGTH_LONG);
