@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -68,23 +69,25 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/perceivedPretty"
+        android:id="@+id/weatherDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Perceived +26"
+        app:layout_constraintTop_toBottomOf="@id/tempPretty"
+        app:layout_constraintStart_toStartOf="@id/viewPretty"
+        android:textSize="30sp"
         android:textColor="@color/colorText"
-        android:layout_marginStart="30dp"
-        app:layout_constraintStart_toStartOf="@id/tempPretty"
-        app:layout_constraintTop_toBottomOf="@id/tempPretty"/>
+        android:text="Rainy Cloudy"
+        android:layout_marginStart="30dp"/>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_058_storm"
-        app:layout_constraintStart_toEndOf="@id/tempPretty"
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imagePretty"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="55dp"
-        android:layout_marginStart="65dp"/>
+        android:layout_marginEnd="50dp"/>
 
     <View
         android:id="@+id/viewWithDetails"
@@ -97,14 +100,14 @@
         android:layout_marginTop="16dp"/>
 
     <TextView
-        android:id="@+id/precipitationPretty"
+        android:id="@+id/perceivedPretty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="5%"
+        android:text="26"
         android:textSize="35sp"
-        app:layout_constraintStart_toStartOf="@id/precipitationPrettyHint"
-        app:layout_constraintBottom_toTopOf="@id/precipitationPrettyHint"
-        app:layout_constraintEnd_toEndOf="@id/precipitationPrettyHint"
+        app:layout_constraintStart_toStartOf="@id/perceivedPrettyHint"
+        app:layout_constraintBottom_toTopOf="@id/perceivedPrettyHint"
+        app:layout_constraintEnd_toEndOf="@id/perceivedPrettyHint"
         android:layout_marginBottom="10dp"/>
 
     <TextView
@@ -130,10 +133,10 @@
         android:layout_marginBottom="10dp"/>
 
     <TextView
-        android:id="@+id/precipitationPrettyHint"
+        android:id="@+id/perceivedPrettyHint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Precipitation"
+        android:text="Perceived"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@id/viewWithDetails"
         app:layout_constraintStart_toStartOf="@id/viewWithDetails"
@@ -147,7 +150,7 @@
         android:text="@string/Humidity"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@id/viewWithDetails"
-        app:layout_constraintStart_toEndOf="@id/precipitationPrettyHint"
+        app:layout_constraintStart_toEndOf="@id/perceivedPrettyHint"
         android:layout_marginStart="70dp"
         android:layout_marginBottom="10dp"/>
 
@@ -162,16 +165,29 @@
         android:layout_marginStart="70dp"
         android:layout_marginBottom="10dp"/>
 
+    <View
+        android:id="@+id/moreDetails"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@drawable/round_place"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toBottomOf="@id/viewWithDetails"
+        android:layout_marginTop="16dp"/>
 
-<!--    viewWithDetails-->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewAnother"
-            android:layout_width="match_parent"
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/viewWithDetails"
-            app:layout_constraintTop_toBottomOf="@id/viewWithDetails"
-            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="@id/moreDetails"
+            app:layout_constraintTop_toTopOf="@id/moreDetails"
+            app:layout_constraintEnd_toEndOf="@id/moreDetails"
+            app:layout_constraintBottom_toBottomOf="@id/moreDetails"
 
             />
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
