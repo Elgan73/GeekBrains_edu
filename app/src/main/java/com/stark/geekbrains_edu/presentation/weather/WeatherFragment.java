@@ -10,6 +10,13 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -21,7 +28,7 @@ import com.stark.geekbrains_edu.repo.Repository;
 
 import java.io.BufferedReader;
 
-public class WeatherFragment extends Fragment {
+public class WeatherFragment extends Fragment{
 
     private TextView cityPretty;
     private TextView datePretty;
@@ -31,6 +38,8 @@ public class WeatherFragment extends Fragment {
     private TextView humidity;
     private TextView windSpeed;
     private TextView weatherDesc;
+    private MapView mMapView;
+    private GoogleMap googleMap;
     final Handler handler = new Handler();
     char tmp = 0x00B0;
     char percent = 0x25;
@@ -51,12 +60,34 @@ public class WeatherFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.pretty_weather, container, false);
         init(rootView);
+        mMapView = rootView.findViewById(R.id.mapGoogle);
+        mMapView.onCreate(savedInstanceState);
+        mMapView.onResume();
+
+        try {
+            MapsInitializer.initialize(getActivity().getApplicationContext());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
         new Thread(() -> {
             String city = getArguments().getString("CITY");
             BufferedReader in = repository.getJson(city);
             Gson gson = new GsonBuilder().create();
             final Weather weather = gson.fromJson(in, Weather.class);
             handler.post(() -> displayWeather(weather, rootView));
+            handler.post(() -> mMapView.getMapAsync(mMap -> {
+                googleMap = mMap;
+
+                LatLng target = new LatLng(doubleLatLng(weather.location.lat), doubleLatLng(weather.location.lon));
+                googleMap.addMarker(new MarkerOptions().position(target).title(weather.location.name));
+
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(target).zoom(7).build();
+                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+            }));
         }).start();
         return rootView;
     }
@@ -77,7 +108,7 @@ public class WeatherFragment extends Fragment {
             weatherPresenter.navigate(getFragmentManager(), R.id.frgmCont, new CityFragment(), null);
 
     private void displayWeather(Weather weather, View view) {
-        if(weather.error != null) {
+        if (weather.error != null) {
             Snackbar snackbar = Snackbar.make(view, "Request failed, please try again", Snackbar.LENGTH_LONG);
             snackbar.getView();
             snackbar.show();
@@ -91,7 +122,13 @@ public class WeatherFragment extends Fragment {
             humidity.setText(weather.current.humidity.toString() + percent);
             windSpeed.setText(weather.current.windSpeed + "m/s");
             weatherDesc.setText(weather.current.weatherDescriptions.get(0));
+
         }
 
     }
+
+    private double doubleLatLng(String a) {
+        return Double.parseDouble(a);
+    }
+
 }
