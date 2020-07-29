@@ -24,6 +24,7 @@ import com.squareup.picasso.Picasso;
 import com.stark.geekbrains_edu.Model.Weather;
 import com.stark.geekbrains_edu.R;
 import com.stark.geekbrains_edu.presentation.city.CityFragment;
+import com.stark.geekbrains_edu.presentation.settings.SettingsFragment;
 import com.stark.geekbrains_edu.repo.Repository;
 
 import java.io.BufferedReader;
@@ -38,11 +39,12 @@ public class WeatherFragment extends Fragment{
     private TextView humidity;
     private TextView windSpeed;
     private TextView weatherDesc;
+    private ImageView settings;
     private MapView mMapView;
     private GoogleMap googleMap;
-    final Handler handler = new Handler();
-    char tmp = 0x00B0;
-    char percent = 0x25;
+    private final Handler handler = new Handler();
+    private char tmp = 0x00B0;
+    private char percent = 0x25;
     Repository repository = new Repository();
     WeatherPresenter weatherPresenter = new WeatherPresenter();
 
@@ -55,6 +57,8 @@ public class WeatherFragment extends Fragment{
 
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,7 +66,7 @@ public class WeatherFragment extends Fragment{
         init(rootView);
         mMapView = rootView.findViewById(R.id.mapGoogle);
         mMapView.onCreate(savedInstanceState);
-        mMapView.onResume();
+
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
@@ -78,18 +82,22 @@ public class WeatherFragment extends Fragment{
             Gson gson = new GsonBuilder().create();
             final Weather weather = gson.fromJson(in, Weather.class);
             handler.post(() -> displayWeather(weather, rootView));
-            handler.post(() -> mMapView.getMapAsync(mMap -> {
-                googleMap = mMap;
-
-                LatLng target = new LatLng(doubleLatLng(weather.location.lat), doubleLatLng(weather.location.lon));
-                googleMap.addMarker(new MarkerOptions().position(target).title(weather.location.name));
-
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(target).zoom(7).build();
-                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-            }));
+            mMapView(handler, weather);
         }).start();
         return rootView;
+    }
+
+    private void mMapView(Handler handler, Weather weather) {
+        handler.post(() -> mMapView.getMapAsync(mMap -> {
+            googleMap = mMap;
+
+            LatLng target = new LatLng(doubleLatLng(weather.location.lat), doubleLatLng(weather.location.lon));
+            googleMap.addMarker(new MarkerOptions().position(target).title(weather.location.name));
+
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(target).zoom(7).build();
+            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+        }));
     }
 
     private void init(View view) {
@@ -102,7 +110,13 @@ public class WeatherFragment extends Fragment{
         windSpeed = view.findViewById(R.id.windSpeedPretty);
         cityPretty.setOnClickListener(clickListener);
         weatherDesc = view.findViewById(R.id.weatherDescription);
+        settings = view.findViewById(R.id.settingsPretty);
+        settings.setOnClickListener(clickListenerSettings);
     }
+
+    View.OnClickListener clickListenerSettings = view -> {
+        weatherPresenter.navigate(getFragmentManager(), R.id.frgmCont, new SettingsFragment(), null);
+    };
 
     View.OnClickListener clickListener = view ->
             weatherPresenter.navigate(getFragmentManager(), R.id.frgmCont, new CityFragment(), null);
@@ -131,4 +145,21 @@ public class WeatherFragment extends Fragment{
         return Double.parseDouble(a);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mMapView.onResume();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mMapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mMapView.onLowMemory();
+    }
 }
