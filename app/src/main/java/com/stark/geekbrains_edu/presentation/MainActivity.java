@@ -1,41 +1,55 @@
 package com.stark.geekbrains_edu.presentation;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.stark.geekbrains_edu.R;
-import com.stark.geekbrains_edu.presentation.city.CityFragment;
+import com.stark.geekbrains_edu.presentation.weather.WeatherFragment;
+import com.stark.geekbrains_edu.service.WeatherService;
 
 public class MainActivity extends AppCompatActivity {
 
     MainPresenter mainPresenter = new MainPresenter();
+    private WeatherService.ServiceBinder serviceBinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mainPresenter.onStart(getSupportFragmentManager(), R.id.frgmCont, new CityFragment());
-//        BottomNavigationView bnm = findViewById(R.id.bottomNavMenu);
-//        bnm.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                switch (item.getItemId()) {
-//                    case R.id.city:
-//                        CityFragment cityChangeFragment = new CityFragment();
-//                        mainPresenter.onStart(getSupportFragmentManager(), R.id.frgmCont, cityChangeFragment);
-//                        break;
-//                    case R.id.weather:
-//                        WeatherFragment weatherFragment = new WeatherFragment();
-//                        mainPresenter.onStart(getSupportFragmentManager(), R.id.frgmCont, weatherFragment);
-//                        break;
-//                }
-//                return false;
-//            }
-//        });
+        mainPresenter.onStart(getSupportFragmentManager(), R.id.frgmCont, new WeatherFragment());
+        savedInstanceState.putString("CITY", "Ulyanovsk");
+        Intent intent = new Intent(this, WeatherService.class);
+        bindService(intent, boundServiceConnection, Context.BIND_AUTO_CREATE);
 
-
+        new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            serviceBinder.getWeatherData("Ulyanovsk");
+        }).start();
     }
+
+    private ServiceConnection boundServiceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder binder) {
+            serviceBinder = (WeatherService.ServiceBinder) binder;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            stopService(getIntent());
+        }
+    };
+
 
 
 }

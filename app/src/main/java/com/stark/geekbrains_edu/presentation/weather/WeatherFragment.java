@@ -1,5 +1,6 @@
 package com.stark.geekbrains_edu.presentation.weather;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import com.stark.geekbrains_edu.R;
 import com.stark.geekbrains_edu.presentation.city.CityFragment;
 import com.stark.geekbrains_edu.presentation.settings.SettingsFragment;
 import com.stark.geekbrains_edu.repo.Repository;
+import com.stark.geekbrains_edu.service.WeatherService;
 
 import java.io.BufferedReader;
 
@@ -46,6 +48,7 @@ public class WeatherFragment extends Fragment{
     private char tmp = 0x00B0;
     private char percent = 0x25;
     Repository repository = new Repository();
+    WeatherService.ServiceBinder bound;
     WeatherPresenter weatherPresenter = new WeatherPresenter();
 
     public WeatherFragment() {
@@ -57,16 +60,14 @@ public class WeatherFragment extends Fragment{
 
     }
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.pretty_weather, container, false);
-        init(rootView);
+        Intent intent = new Intent();
+        init(rootView, intent);
         mMapView = rootView.findViewById(R.id.mapGoogle);
         mMapView.onCreate(savedInstanceState);
-
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
@@ -77,15 +78,17 @@ public class WeatherFragment extends Fragment{
 
 
         new Thread(() -> {
-            String city = getArguments().getString("CITY");
-            BufferedReader in = repository.getJson(city);
-            Gson gson = new GsonBuilder().create();
-            final Weather weather = gson.fromJson(in, Weather.class);
-            handler.post(() -> displayWeather(weather, rootView));
-            mMapView(handler, weather);
+                String city = getArguments().getString("CITY");
+                BufferedReader in = bound.getWeatherData(city);
+                Gson gson = new GsonBuilder().create();
+                final Weather weather = gson.fromJson(in, Weather.class);
+                handler.post(() -> displayWeather(weather, rootView));
+                mMapView(handler, weather);
         }).start();
         return rootView;
     }
+
+
 
     private void mMapView(Handler handler, Weather weather) {
         handler.post(() -> mMapView.getMapAsync(mMap -> {
@@ -100,7 +103,7 @@ public class WeatherFragment extends Fragment{
         }));
     }
 
-    private void init(View view) {
+    private void init(View view, Intent intent) {
         datePretty = view.findViewById(R.id.datePretty);
         cityPretty = view.findViewById(R.id.cityPretty);
         tempPretty = view.findViewById(R.id.tempPretty);
@@ -162,4 +165,7 @@ public class WeatherFragment extends Fragment{
         super.onLowMemory();
         mMapView.onLowMemory();
     }
+
+
+
 }
