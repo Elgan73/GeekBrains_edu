@@ -20,7 +20,7 @@ import java.net.URL;
 public class WeatherService extends Service {
     final String API_KEY = "00138a6a0ccff95b3b1e1064f3f9b25c";
 
-    private final IBinder binder = new ServiceBinder();
+    private IBinder binder = new ServiceBinder();
 
 
     @Nullable
@@ -52,9 +52,10 @@ public class WeatherService extends Service {
 
     public class ServiceBinder extends Binder {
 
-        WeatherService getService(){ return WeatherService.this;}
-        public BufferedReader getWeatherData(String city) {
-            return getService().getData(city);
+        public WeatherService getService() {
+            return WeatherService.this;
         }
+
+
     }
 }

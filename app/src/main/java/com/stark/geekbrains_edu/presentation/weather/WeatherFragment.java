@@ -1,8 +1,12 @@
 package com.stark.geekbrains_edu.presentation.weather;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +28,7 @@ import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 import com.stark.geekbrains_edu.Model.Weather;
 import com.stark.geekbrains_edu.R;
+import com.stark.geekbrains_edu.net.ApiService;
 import com.stark.geekbrains_edu.presentation.city.CityFragment;
 import com.stark.geekbrains_edu.presentation.settings.SettingsFragment;
 import com.stark.geekbrains_edu.repo.Repository;
@@ -31,7 +36,7 @@ import com.stark.geekbrains_edu.service.WeatherService;
 
 import java.io.BufferedReader;
 
-public class WeatherFragment extends Fragment{
+public class WeatherFragment extends Fragment {
 
     private TextView cityPretty;
     private TextView datePretty;
@@ -47,12 +52,11 @@ public class WeatherFragment extends Fragment{
     private final Handler handler = new Handler();
     private char tmp = 0x00B0;
     private char percent = 0x25;
+    private boolean isBound = false;
     Repository repository = new Repository();
-    WeatherService.ServiceBinder bound;
+    private WeatherService bound;
     WeatherPresenter weatherPresenter = new WeatherPresenter();
-
-    public WeatherFragment() {
-    }
+    ApiService apiService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,6 +73,7 @@ public class WeatherFragment extends Fragment{
         mMapView = rootView.findViewById(R.id.mapGoogle);
         mMapView.onCreate(savedInstanceState);
 
+
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
 
@@ -76,18 +81,20 @@ public class WeatherFragment extends Fragment{
             e.printStackTrace();
         }
 
+        doBindService();
 
         new Thread(() -> {
-                String city = getArguments().getString("CITY");
-                BufferedReader in = bound.getWeatherData(city);
-                Gson gson = new GsonBuilder().create();
-                final Weather weather = gson.fromJson(in, Weather.class);
-                handler.post(() -> displayWeather(weather, rootView));
-                mMapView(handler, weather);
+
+            String city = getArguments().getString("CITY");
+            Gson gson = new GsonBuilder().create();
+            BufferedReader in = bound.getData(city);
+            final Weather weather = gson.fromJson(in, Weather.class);
+            handler.post(() -> displayWeather(weather, rootView));
+            mMapView(handler, weather);
         }).start();
+
         return rootView;
     }
-
 
 
     private void mMapView(Handler handler, Weather weather) {
@@ -144,6 +151,19 @@ public class WeatherFragment extends Fragment{
 
     }
 
+//    private void retrofitRequest(String city, String apiKey) {
+//        apiService.getWeatherData(city, apiKey).enqueue(new Callback<Weather>() {
+//            @Override
+//            public void onResponse(Call<Weather> call, Response<Weather> response) {
+//
+//            }
+//            @Override
+//            public void onFailure(Call<Weather> call, Throwable t) {
+//
+//            }
+//        });
+//    }
+
     private double doubleLatLng(String a) {
         return Double.parseDouble(a);
     }
@@ -158,6 +178,7 @@ public class WeatherFragment extends Fragment{
     public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
+        doUnbindService();
     }
 
     @Override
@@ -166,6 +187,33 @@ public class WeatherFragment extends Fragment{
         mMapView.onLowMemory();
     }
 
+    void doBindService() {
+        getActivity().bindService(new Intent(getActivity(), WeatherService.class), boundServiceConnection, Context.BIND_AUTO_CREATE);
+        isBound = true;
+    }
+
+    void doUnbindService() {
+        if (isBound) {
+            getActivity().unbindService(boundServiceConnection);
+            isBound = false;
+        }
+    }
+
+
+    private ServiceConnection boundServiceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            bound = ((WeatherService.ServiceBinder) service).getService();
+            isBound = bound != null;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            isBound = false;
+            bound = null;
+        }
+    };
 
 
 }
