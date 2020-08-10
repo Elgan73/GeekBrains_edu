@@ -1,12 +1,8 @@
 package com.stark.geekbrains_edu.presentation.weather;
 
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,18 +19,17 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 import com.stark.geekbrains_edu.Model.Weather;
 import com.stark.geekbrains_edu.R;
 import com.stark.geekbrains_edu.net.ApiService;
+import com.stark.geekbrains_edu.net.RetrofitNetwork;
 import com.stark.geekbrains_edu.presentation.city.CityFragment;
 import com.stark.geekbrains_edu.presentation.settings.SettingsFragment;
-import com.stark.geekbrains_edu.repo.Repository;
-import com.stark.geekbrains_edu.service.WeatherService;
 
-import java.io.BufferedReader;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class WeatherFragment extends Fragment {
 
@@ -52,27 +47,25 @@ public class WeatherFragment extends Fragment {
     private final Handler handler = new Handler();
     private char tmp = 0x00B0;
     private char percent = 0x25;
-    private boolean isBound = false;
-    Repository repository = new Repository();
-    private WeatherService bound;
     WeatherPresenter weatherPresenter = new WeatherPresenter();
+    RetrofitNetwork retrofit = new RetrofitNetwork();
     ApiService apiService;
+
+    final String API_KEY = "00138a6a0ccff95b3b1e1064f3f9b25c";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.pretty_weather, container, false);
-        Intent intent = new Intent();
-        init(rootView, intent);
+        init(rootView);
         mMapView = rootView.findViewById(R.id.mapGoogle);
         mMapView.onCreate(savedInstanceState);
-
+        String city = getArguments().getString("CITY");
 
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
@@ -81,36 +74,14 @@ public class WeatherFragment extends Fragment {
             e.printStackTrace();
         }
 
-        doBindService();
 
-        new Thread(() -> {
-
-            String city = getArguments().getString("CITY");
-            Gson gson = new GsonBuilder().create();
-            BufferedReader in = bound.getData(city);
-            final Weather weather = gson.fromJson(in, Weather.class);
-            handler.post(() -> displayWeather(weather, rootView));
-            mMapView(handler, weather);
-        }).start();
+        apiService = retrofit.retrofit().create(ApiService.class);
+        retrofitRequest(city, API_KEY, rootView);
 
         return rootView;
     }
 
-
-    private void mMapView(Handler handler, Weather weather) {
-        handler.post(() -> mMapView.getMapAsync(mMap -> {
-            googleMap = mMap;
-
-            LatLng target = new LatLng(doubleLatLng(weather.location.lat), doubleLatLng(weather.location.lon));
-            googleMap.addMarker(new MarkerOptions().position(target).title(weather.location.name));
-
-            CameraPosition cameraPosition = new CameraPosition.Builder().target(target).zoom(7).build();
-            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-        }));
-    }
-
-    private void init(View view, Intent intent) {
+    private void init(View view) {
         datePretty = view.findViewById(R.id.datePretty);
         cityPretty = view.findViewById(R.id.cityPretty);
         tempPretty = view.findViewById(R.id.tempPretty);
@@ -131,38 +102,42 @@ public class WeatherFragment extends Fragment {
     View.OnClickListener clickListener = view ->
             weatherPresenter.navigate(getFragmentManager(), R.id.frgmCont, new CityFragment(), null);
 
-    private void displayWeather(Weather weather, View view) {
-        if (weather.error != null) {
-            Snackbar snackbar = Snackbar.make(view, "Request failed, please try again", Snackbar.LENGTH_LONG);
-            snackbar.getView();
-            snackbar.show();
-        } else {
-            cityPretty.setText(weather.location.name);
-            datePretty.setText(weatherPresenter.date());
-            tempPretty.setText(weather.current.temperature.toString() + tmp);
-            perceivedPretty.setText(weather.current.feelslike.toString() + tmp);
-            String url = weather.current.weatherIcons.get(0);
-            Picasso.get().load(url).into(imagePretty);
-            humidity.setText(weather.current.humidity.toString() + percent);
-            windSpeed.setText(weather.current.windSpeed + "m/s");
-            weatherDesc.setText(weather.current.weatherDescriptions.get(0));
+    private void retrofitRequest(String city, String apiKey, View view) {
+        apiService.loadData(city).enqueue(new Callback<Weather>() {
+            @Override
+            public void onResponse(Call<Weather> call, Response<Weather> response) {
+                if(response.body() != null) {
+                    cityPretty.setText(response.body().location.name);
+                    datePretty.setText(weatherPresenter.date());
+                    tempPretty.setText(response.body().current.temperature.toString() + tmp);
+                    perceivedPretty.setText(response.body().current.feelslike.toString() + tmp);
+                    String url = response.body().current.weatherIcons.get(0);
+                    Picasso.get().load(url).into(imagePretty);
+                    humidity.setText(response.body().current.humidity.toString() + percent);
+                    windSpeed.setText(response.body().current.windSpeed + "m/s");
+                    weatherDesc.setText(response.body().current.weatherDescriptions.get(0));
+                    handler.post(() -> mMapView.getMapAsync(mMap -> {
+                        googleMap = mMap;
 
-        }
+                        LatLng target = new LatLng(doubleLatLng(response.body().location.lat), doubleLatLng(response.body().location.lon));
+                        googleMap.addMarker(new MarkerOptions().position(target).title(response.body().location.name));
 
+                        CameraPosition cameraPosition = new CameraPosition.Builder().target(target).zoom(7).build();
+                        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+                    }));
+                }
+            }
+            @Override
+            public void onFailure(Call<Weather> call, Throwable t) {
+                Snackbar snackbar = Snackbar.make(view, "Request failed, please try again", Snackbar.LENGTH_LONG);
+                snackbar.getView();
+                snackbar.show();
+                cityPretty.setText("Error");
+                Log.d("ERROR_RETROFIT", t.getLocalizedMessage());
+            }
+        });
     }
-
-//    private void retrofitRequest(String city, String apiKey) {
-//        apiService.getWeatherData(city, apiKey).enqueue(new Callback<Weather>() {
-//            @Override
-//            public void onResponse(Call<Weather> call, Response<Weather> response) {
-//
-//            }
-//            @Override
-//            public void onFailure(Call<Weather> call, Throwable t) {
-//
-//            }
-//        });
-//    }
 
     private double doubleLatLng(String a) {
         return Double.parseDouble(a);
@@ -178,7 +153,6 @@ public class WeatherFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         mMapView.onDestroy();
-        doUnbindService();
     }
 
     @Override
@@ -186,34 +160,4 @@ public class WeatherFragment extends Fragment {
         super.onLowMemory();
         mMapView.onLowMemory();
     }
-
-    void doBindService() {
-        getActivity().bindService(new Intent(getActivity(), WeatherService.class), boundServiceConnection, Context.BIND_AUTO_CREATE);
-        isBound = true;
-    }
-
-    void doUnbindService() {
-        if (isBound) {
-            getActivity().unbindService(boundServiceConnection);
-            isBound = false;
-        }
-    }
-
-
-    private ServiceConnection boundServiceConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            bound = ((WeatherService.ServiceBinder) service).getService();
-            isBound = bound != null;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            isBound = false;
-            bound = null;
-        }
-    };
-
-
 }
