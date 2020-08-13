@@ -1,5 +1,6 @@
 package com.stark.geekbrains_edu.presentation.city;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,33 +19,18 @@ import com.stark.geekbrains_edu.presentation.weather.WeatherFragment;
 
 public class CityFragment extends Fragment {
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
     Button sendData;
     String[] dataSpinner = {"", "Ulyanovsk", "Moscow", "Vladivostok", "Voronezh"};
     CityPresenter cityPresenter = new CityPresenter();
     TextInputEditText typeCity;
+    SharedPreferences sharedPref;
 
     public CityFragment() {
     }
 
-//    public static CityFragment newInstance(String param1, String param2) {
-//        CityFragment fragment = new CityFragment();
-//
-//
-//        return fragment;
-//    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -63,6 +49,8 @@ public class CityFragment extends Fragment {
                 String c = spinner.getSelectedItem().toString();
                 if (!spinner.getSelectedItem().toString().equals("")) {
                     cityPresenter.navigate(getFragmentManager(), R.id.frgmCont, new WeatherFragment(), spinner.getSelectedItem().toString());
+                    saveToSharedPreference(sharedPref, spinner.getSelectedItem().toString());
+
                 } else {
                     Snackbar snackbar = Snackbar.make(rootView, "Choose your city, dude!", Snackbar.LENGTH_LONG);
                     snackbar.getView();
@@ -71,6 +59,7 @@ public class CityFragment extends Fragment {
             } else {
                 if(typeCity.getText() != null) {
                     cityPresenter.navigate(getFragmentManager(), R.id.frgmCont, new WeatherFragment(), typeCity.getText().toString());
+                    saveToSharedPreference(sharedPref, typeCity.getText().toString());
                 } else {
                     Snackbar snackbar = Snackbar.make(rootView, "Choose your city, dude!", Snackbar.LENGTH_LONG);
                     snackbar.getView();
@@ -82,9 +71,9 @@ public class CityFragment extends Fragment {
     }
 
     private void saveToSharedPreference(SharedPreferences sharedPref, String city) {
+        sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        String MY_CITY = "";
-        editor.putString(MY_CITY, city);
+        editor.putString("MY_CITY", city);
         editor.apply();
 
     }
