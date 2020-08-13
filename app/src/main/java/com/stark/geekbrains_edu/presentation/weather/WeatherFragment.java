@@ -1,5 +1,6 @@
 package com.stark.geekbrains_edu.presentation.weather;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -22,8 +23,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 import com.stark.geekbrains_edu.Model.Weather;
 import com.stark.geekbrains_edu.R;
-import com.stark.geekbrains_edu.net.ApiService;
-import com.stark.geekbrains_edu.net.RetrofitNetwork;
+import com.stark.geekbrains_edu.data.net.ApiService;
+import com.stark.geekbrains_edu.data.net.RetrofitNetwork;
 import com.stark.geekbrains_edu.presentation.city.CityFragment;
 import com.stark.geekbrains_edu.presentation.settings.SettingsFragment;
 
@@ -44,14 +45,15 @@ public class WeatherFragment extends Fragment {
     private ImageView settings;
     private MapView mMapView;
     private GoogleMap googleMap;
-    private final Handler handler = new Handler();
     private char tmp = 0x00B0;
     private char percent = 0x25;
-    WeatherPresenter weatherPresenter = new WeatherPresenter();
-    RetrofitNetwork retrofit = new RetrofitNetwork();
-    ApiService apiService;
-
     final String API_KEY = "00138a6a0ccff95b3b1e1064f3f9b25c";
+    private final Handler handler = new Handler();
+    private RetrofitNetwork retrofit = new RetrofitNetwork();
+    private ApiService apiService;
+    public static final String MY_CITY = "";
+    private SharedPreferences mCity;
+    WeatherPresenter weatherPresenter = new WeatherPresenter();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,18 +67,20 @@ public class WeatherFragment extends Fragment {
         init(rootView);
         mMapView = rootView.findViewById(R.id.mapGoogle);
         mMapView.onCreate(savedInstanceState);
-        String city = getArguments().getString("CITY");
-
+//        String city = getArguments().getString("CITY");
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
-
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-
         apiService = retrofit.retrofit().create(ApiService.class);
-        retrofitRequest(city, API_KEY, rootView);
+        if(mCity.contains(MY_CITY)) {
+            retrofitRequest(mCity.getString(MY_CITY, ""), API_KEY, rootView);
+        } else {
+            retrofitRequest("Ulyanovsk", API_KEY, rootView);
+        }
+
 
         return rootView;
     }
@@ -103,11 +107,13 @@ public class WeatherFragment extends Fragment {
             weatherPresenter.navigate(getFragmentManager(), R.id.frgmCont, new CityFragment(), null);
 
     private void retrofitRequest(String city, String apiKey, View view) {
-        apiService.loadData(city).enqueue(new Callback<Weather>() {
+        apiService.loadData(apiKey, city).enqueue(new Callback<Weather>() {
             @Override
             public void onResponse(Call<Weather> call, Response<Weather> response) {
                 if(response.body() != null) {
                     cityPretty.setText(response.body().location.name);
+                    String strCity = response.body().location.name;
+                    saveToSharedPreference(mCity, strCity);
                     datePretty.setText(weatherPresenter.date());
                     tempPretty.setText(response.body().current.temperature.toString() + tmp);
                     perceivedPretty.setText(response.body().current.feelslike.toString() + tmp);
@@ -144,6 +150,12 @@ public class WeatherFragment extends Fragment {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         mMapView.onResume();
@@ -159,5 +171,13 @@ public class WeatherFragment extends Fragment {
     public void onLowMemory() {
         super.onLowMemory();
         mMapView.onLowMemory();
+    }
+
+
+    private void saveToSharedPreference(SharedPreferences sharedPref, String city) {
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(MY_CITY, city);
+        editor.apply();
+
     }
 }

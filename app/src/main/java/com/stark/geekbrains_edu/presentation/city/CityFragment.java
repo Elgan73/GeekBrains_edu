@@ -1,12 +1,12 @@
 package com.stark.geekbrains_edu.presentation.city;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import androidx.fragment.app.Fragment;
@@ -24,24 +24,19 @@ public class CityFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     Button sendData;
-//    WeatherModel weatherModel = new WeatherModel();
     String[] dataSpinner = {"", "Ulyanovsk", "Moscow", "Vladivostok", "Voronezh"};
     CityPresenter cityPresenter = new CityPresenter();
     TextInputEditText typeCity;
-    Bundle bundle;
-    RadioGroup radioGroup;
 
     public CityFragment() {
     }
 
-    public static CityFragment newInstance(String param1, String param2) {
-        CityFragment fragment = new CityFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+//    public static CityFragment newInstance(String param1, String param2) {
+//        CityFragment fragment = new CityFragment();
+//
+//
+//        return fragment;
+//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,30 +58,34 @@ public class CityFragment extends Fragment {
         spinner.setSelection(0);
         typeCity = rootView.findViewById(R.id.typeCity);
         sendData = rootView.findViewById(R.id.sendData);
-        sendData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (typeCity.getText().toString().equals("")) {
-                    String c = spinner.getSelectedItem().toString();
-                    if (!spinner.getSelectedItem().toString().equals("")) {
-                        cityPresenter.navigate(getFragmentManager(), R.id.frgmCont, new WeatherFragment(), spinner.getSelectedItem().toString());
-                    } else {
-                        Snackbar snackbar = Snackbar.make(rootView, "Choose your city, dude!", Snackbar.LENGTH_LONG);
-                        snackbar.getView();
-                        snackbar.show();
-                    }
+        sendData.setOnClickListener(view -> {
+            if (typeCity.getText().toString().equals("")) {
+                String c = spinner.getSelectedItem().toString();
+                if (!spinner.getSelectedItem().toString().equals("")) {
+                    cityPresenter.navigate(getFragmentManager(), R.id.frgmCont, new WeatherFragment(), spinner.getSelectedItem().toString());
                 } else {
-                    if(typeCity.getText() != null) {
-
-                        cityPresenter.navigate(getFragmentManager(), R.id.frgmCont, new WeatherFragment(), typeCity.getText().toString());
-                    } else {
-                        Snackbar snackbar = Snackbar.make(rootView, "Choose your city, dude!", Snackbar.LENGTH_LONG);
-                        snackbar.getView();
-                        snackbar.show();
-                    }
+                    Snackbar snackbar = Snackbar.make(rootView, "Choose your city, dude!", Snackbar.LENGTH_LONG);
+                    snackbar.getView();
+                    snackbar.show();
+                }
+            } else {
+                if(typeCity.getText() != null) {
+                    cityPresenter.navigate(getFragmentManager(), R.id.frgmCont, new WeatherFragment(), typeCity.getText().toString());
+                } else {
+                    Snackbar snackbar = Snackbar.make(rootView, "Choose your city, dude!", Snackbar.LENGTH_LONG);
+                    snackbar.getView();
+                    snackbar.show();
                 }
             }
         });
         return rootView;
+    }
+
+    private void saveToSharedPreference(SharedPreferences sharedPref, String city) {
+        SharedPreferences.Editor editor = sharedPref.edit();
+        String MY_CITY = "";
+        editor.putString(MY_CITY, city);
+        editor.apply();
+
     }
 }
