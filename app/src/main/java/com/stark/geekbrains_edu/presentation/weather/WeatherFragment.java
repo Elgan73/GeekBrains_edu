@@ -1,5 +1,7 @@
 package com.stark.geekbrains_edu.presentation.weather;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -22,8 +24,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 import com.stark.geekbrains_edu.Model.Weather;
 import com.stark.geekbrains_edu.R;
-import com.stark.geekbrains_edu.net.ApiService;
-import com.stark.geekbrains_edu.net.RetrofitNetwork;
+import com.stark.geekbrains_edu.data.net.ApiService;
+import com.stark.geekbrains_edu.data.net.RetrofitNetwork;
 import com.stark.geekbrains_edu.presentation.city.CityFragment;
 import com.stark.geekbrains_edu.presentation.settings.SettingsFragment;
 
@@ -44,14 +46,15 @@ public class WeatherFragment extends Fragment {
     private ImageView settings;
     private MapView mMapView;
     private GoogleMap googleMap;
-    private final Handler handler = new Handler();
     private char tmp = 0x00B0;
     private char percent = 0x25;
-    WeatherPresenter weatherPresenter = new WeatherPresenter();
-    RetrofitNetwork retrofit = new RetrofitNetwork();
-    ApiService apiService;
-
     final String API_KEY = "00138a6a0ccff95b3b1e1064f3f9b25c";
+    private final Handler handler = new Handler();
+    private RetrofitNetwork retrofit = new RetrofitNetwork();
+    private ApiService apiService;
+    public static final String MY_CITY = "";
+    private SharedPreferences mCity;
+    WeatherPresenter weatherPresenter = new WeatherPresenter();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,18 +68,23 @@ public class WeatherFragment extends Fragment {
         init(rootView);
         mMapView = rootView.findViewById(R.id.mapGoogle);
         mMapView.onCreate(savedInstanceState);
-        String city = getArguments().getString("CITY");
-
         try {
             MapsInitializer.initialize(getActivity().getApplicationContext());
-
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-
         apiService = retrofit.retrofit().create(ApiService.class);
-        retrofitRequest(city, API_KEY, rootView);
+        mCity = requireActivity().getPreferences(Context.MODE_PRIVATE);
+        String mct = mCity.getString("MY_CITY", "");
+        System.out.println("DFVVFVFVFVFVFVF -> " + mct);
+        if(mCity.contains("MY_CITY")) {
+            retrofitRequest(mct, API_KEY, rootView);
+        } else {
+            retrofitRequest("Ulyanovsk", API_KEY, rootView);
+        }
+
+
 
         return rootView;
     }
@@ -103,10 +111,10 @@ public class WeatherFragment extends Fragment {
             weatherPresenter.navigate(getFragmentManager(), R.id.frgmCont, new CityFragment(), null);
 
     private void retrofitRequest(String city, String apiKey, View view) {
-        apiService.loadData(city).enqueue(new Callback<Weather>() {
+        apiService.loadData(apiKey, city).enqueue(new Callback<Weather>() {
             @Override
             public void onResponse(Call<Weather> call, Response<Weather> response) {
-                if(response.body() != null) {
+                if (response.body() != null) {
                     cityPretty.setText(response.body().location.name);
                     datePretty.setText(weatherPresenter.date());
                     tempPretty.setText(response.body().current.temperature.toString() + tmp);
@@ -128,6 +136,7 @@ public class WeatherFragment extends Fragment {
                     }));
                 }
             }
+
             @Override
             public void onFailure(Call<Weather> call, Throwable t) {
                 Snackbar snackbar = Snackbar.make(view, "Request failed, please try again", Snackbar.LENGTH_LONG);
@@ -141,6 +150,12 @@ public class WeatherFragment extends Fragment {
 
     private double doubleLatLng(String a) {
         return Double.parseDouble(a);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
     }
 
     @Override
@@ -160,4 +175,15 @@ public class WeatherFragment extends Fragment {
         super.onLowMemory();
         mMapView.onLowMemory();
     }
+
+    private void loadSharedPreferences(SharedPreferences shPref) {
+
+    }
+
+//    private void saveToSharedPreference(SharedPreferences sharedPref, String city) {
+//        SharedPreferences.Editor editor = sharedPref.edit();
+//        editor.putString(MY_CITY, city);
+//        editor.apply();
+//
+//    }
 }
