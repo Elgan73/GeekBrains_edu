@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "211275432605",
+    "firebase_url": "https://starkseduproject.firebaseio.com",
+    "project_id": "starkseduproject",
+    "storage_bucket": "starkseduproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:211275432605:android:f31d0c00eaeeb37befca74",
+        "android_client_info": {
+          "package_name": "com.stark.geekbrains_edu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "211275432605-btou6eijuu9jpdjk5cdr1hm77n0bqpmg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlx88qDaL8U5-4qc3-qWaHXNp7_di6Tck"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "211275432605-btou6eijuu9jpdjk5cdr1hm77n0bqpmg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

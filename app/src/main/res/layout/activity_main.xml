@@ -8,6 +8,5 @@
     android:id="@+id/frgmCont"
     tools:context=".presentation.MainActivity">
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 

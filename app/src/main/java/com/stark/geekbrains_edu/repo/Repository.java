@@ -12,6 +12,7 @@ public class Repository {
 
     final String API_KEY = "00138a6a0ccff95b3b1e1064f3f9b25c";
 
+
     public BufferedReader getJson(String city) {
         HttpURLConnection connection;
         BufferedReader in = null;
@@ -29,4 +30,6 @@ public class Repository {
         }
         return in;
     }
+
+
 }

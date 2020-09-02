@@ -12,5 +12,6 @@
     <string name="fahrenheit">Фаренгейт</string>
     <string name="celsius">Цельсий</string>
     <string name="Humidity">Влажность</string>
-    <string name="WindSpeed">Скорость ветра</string>
+    <string name="WindSpeed">Скорость ветра км/ч</string>
+    <string name="perceived">Ощущается как</string>
 </resources>
