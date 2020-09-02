@@ -5,7 +5,7 @@ import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(indices = {@Index(value = {"date", "city", "temp"})})
+@Entity(indices = {@Index(value = {"date", "city", "wind", "humidity", "temp"})})
 public class EntityCity {
     @PrimaryKey(autoGenerate = true)
     public int weatherId;
@@ -16,6 +16,12 @@ public class EntityCity {
     @ColumnInfo(name = "city")
     public String city;
 
+    @ColumnInfo(name = "wind")
+    public String wind;
+
+    @ColumnInfo(name = "humidity")
+    public String humidity;
+
     @ColumnInfo(name = "temp")
-    public double temp;
+    public String temp;
 }

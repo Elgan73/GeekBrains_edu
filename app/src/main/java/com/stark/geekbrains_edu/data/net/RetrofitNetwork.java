@@ -1,4 +1,4 @@
-package com.stark.geekbrains_edu.net;
+package com.stark.geekbrains_edu.data.net;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

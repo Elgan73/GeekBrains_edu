@@ -27,10 +27,13 @@
     <string name="fahrenheit" translatable="true">Fahrenheit</string>
     <string name="celsius" translatable="true">Celsius</string>
     <string name="Humidity" translatable="true">Humidity</string>
-    <string name="WindSpeed" translatable="true">Wind speed</string>
+    <string name="WindSpeed" translatable="true">Wind speed km/h</string>
     <string name="on_off" translatable="false">On/Off</string>
     <string name="settings" translatable="false">Settings</string>
     <string name="my_weather" translatable="false">My Weather</string>
     <string name="change_city" translatable="false">Change city</string>
     <string name="humidity" translatable="false">75%</string>
+    <string name="under_construction" translatable="false">Under construction</string>
+    <string name="perceived">Perceived</string>
+    <string name="email" translatable="false">email</string>
 </resources>

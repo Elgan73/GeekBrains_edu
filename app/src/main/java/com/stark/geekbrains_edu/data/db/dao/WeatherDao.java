@@ -22,14 +22,18 @@ public interface WeatherDao {
     void updateRow(EntityCity entity);
 
     @Delete
-    void deleteAll(EntityCity entity);
+    void deleteCity(EntityCity entity);
 
     @Query("SELECT * FROM EntityCity")
     List<EntityCity> getData();
+
+    @Query("SELECT city FROM EntityCity")
+    String getCity();
 
     @Query("DELETE FROM EntityCity")
     void deleteAllData();
 
     @Query("SELECT COUNT() FROM EntityCity")
-    long getCount();
+    long getCountCities();
+
 }

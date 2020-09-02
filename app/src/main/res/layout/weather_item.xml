@@ -1,64 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/round_place"
-    android:orientation="horizontal"
 
+<com.google.android.material.card.MaterialCardView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/history_cardView"
+    android:layout_height="50dp"
+    android:layout_width="match_parent"
+>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/history_constView"
     >
 
-    <ImageView
-        android:id="@+id/imageViewItem"
+    <TextView
+        android:id="@+id/history_dateItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-
+        android:textColor="@color/colorCity"
+        android:text="26.03.2020"
+        android:textSize="20sp"
+        app:layout_constraintTop_toTopOf="@id/history_constView"
+        app:layout_constraintBottom_toBottomOf="@id/history_constView"
+        app:layout_constraintStart_toStartOf="@id/history_constView"
+        android:layout_marginStart="10dp"
         />
 
     <TextView
-        android:id="@+id/dateItem"
+        android:id="@+id/history_cityName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:textColor="@color/colorText"
-        android:text="26.03.2020"
-        android:textSize="20sp"/>
+        android:textColor="@color/colorCity"
+        android:text="Ulyanovsk"
+        android:textSize="20sp"
+        app:layout_constraintTop_toTopOf="@id/history_constView"
+        app:layout_constraintBottom_toBottomOf="@id/history_constView"
+        app:layout_constraintStart_toEndOf="@id/history_dateItem"
+        app:layout_constraintEnd_toStartOf="@id/history_windItem"/>
+
+
 
     <TextView
-        android:id="@+id/windItem"
+        android:id="@+id/history_windItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_marginStart="15dp"
-        android:textColor="@color/colorText"
+        android:textColor="@color/colorCity"
         android:textSize="20sp"
         android:text="16 m/s"
+        app:layout_constraintTop_toTopOf="@id/history_constView"
+        app:layout_constraintBottom_toBottomOf="@id/history_constView"
+        app:layout_constraintStart_toEndOf="@id/history_cityName"
+        app:layout_constraintEnd_toStartOf="@id/history_humidityItem"
         />
 
     <TextView
-        android:id="@+id/humidityItem"
+        android:id="@+id/history_humidityItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorText"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="25dp"
+        android:textColor="@color/colorCity"
         android:textSize="20sp"
         android:text="75%"
+        app:layout_constraintTop_toTopOf="@id/history_constView"
+        app:layout_constraintBottom_toBottomOf="@id/history_constView"
+        app:layout_constraintEnd_toStartOf="@id/history_tempItem"
+        app:layout_constraintStart_toEndOf="@id/history_windItem"
         />
 
     <TextView
-        android:id="@+id/tempItem"
+        android:id="@+id/history_tempItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:layout_marginTop="25dp"
-        android:layout_marginStart="15dp"
-        android:text="28c"
+        android:text="28"
         android:textAlignment="center"
-        android:textColor="@color/colorText"/>
+        android:textColor="@color/colorCity"
+        app:layout_constraintTop_toTopOf="@id/history_constView"
+        app:layout_constraintBottom_toBottomOf="@id/history_constView"
+        app:layout_constraintEnd_toEndOf="@id/history_constView"
+        android:layout_marginEnd="10dp"
+        />
 
+</androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

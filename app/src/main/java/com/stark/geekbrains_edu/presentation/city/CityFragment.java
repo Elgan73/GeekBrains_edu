@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 
 import androidx.fragment.app.Fragment;
 
@@ -20,7 +18,6 @@ import com.stark.geekbrains_edu.presentation.weather.WeatherFragment;
 public class CityFragment extends Fragment {
 
     Button sendData;
-    String[] dataSpinner = {"", "Ulyanovsk", "Moscow", "Vladivostok", "Voronezh"};
     CityPresenter cityPresenter = new CityPresenter();
     TextInputEditText typeCity;
     SharedPreferences sharedPref;
@@ -37,26 +34,9 @@ public class CityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_city, container, false);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_spinner_item, dataSpinner);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        final Spinner spinner = rootView.findViewById(R.id.spinner);
-        spinner.setAdapter(adapter);
-        spinner.setSelection(0);
         typeCity = rootView.findViewById(R.id.typeCity);
         sendData = rootView.findViewById(R.id.sendData);
         sendData.setOnClickListener(view -> {
-            if (typeCity.getText().toString().equals("")) {
-                String c = spinner.getSelectedItem().toString();
-                if (!spinner.getSelectedItem().toString().equals("")) {
-                    cityPresenter.navigate(getFragmentManager(), R.id.frgmCont, new WeatherFragment(), spinner.getSelectedItem().toString());
-                    saveToSharedPreference(sharedPref, spinner.getSelectedItem().toString());
-
-                } else {
-                    Snackbar snackbar = Snackbar.make(rootView, "Choose your city, dude!", Snackbar.LENGTH_LONG);
-                    snackbar.getView();
-                    snackbar.show();
-                }
-            } else {
                 if(typeCity.getText() != null) {
                     cityPresenter.navigate(getFragmentManager(), R.id.frgmCont, new WeatherFragment(), typeCity.getText().toString());
                     saveToSharedPreference(sharedPref, typeCity.getText().toString());
@@ -65,7 +45,6 @@ public class CityFragment extends Fragment {
                     snackbar.getView();
                     snackbar.show();
                 }
-            }
         });
         return rootView;
     }

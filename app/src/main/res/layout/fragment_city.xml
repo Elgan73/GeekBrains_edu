@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="#D4E4E8"
     >
 
@@ -18,85 +18,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="280dp"
         />
-<com.google.android.material.textfield.TextInputLayout
-    android:id="@+id/textInputLayout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/textTypeCity"
-    android:layout_marginTop="30dp">
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/typeCity"
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/type_your_city"
-        android:inputType="text"
-        android:textColor="@color/colorText"
-        android:textSize="25sp"
-        />
-</com.google.android.material.textfield.TextInputLayout>
-
-    <RadioGroup
-        android:id="@+id/celsiusFahrenheit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textInputLayout"
-        android:layout_marginTop="30dp"
-        android:checkedButton="@id/cels"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="150dp"
         >
 
-        <RadioButton
-            android:id="@+id/cels"
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/typeCity"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/celsius" />
+            android:hint="@string/type_your_city"
+            android:inputType="text"
+            android:textColor="@color/colorCity"
+            android:textSize="25sp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <RadioButton
-            android:id="@+id/fahr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/fahrenheit" />
 
-    </RadioGroup>
 
-    <Spinner
-        android:id="@+id/spinner"
-        style="@style/spinner_style"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chooseYourCity"
-        android:layout_marginTop="30dp"
-        />
 
-    <TextView
-        android:id="@+id/chooseYourCity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/choose_your_city"
-        android:textAlignment="center"
-        android:textColor="@color/colorDarkGrey"
-        android:textSize="40sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textTypeCity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/or_type"
-        android:textAlignment="center"
-        android:textColor="@color/colorDarkGrey"
-        android:textSize="40sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/spinner"
-        android:layout_marginTop="60dp"
-        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

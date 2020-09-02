@@ -1,66 +1,56 @@
 package com.stark.geekbrains_edu.presentation;
 
-import android.content.ComponentName;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
+import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.stark.geekbrains_edu.R;
-import com.stark.geekbrains_edu.presentation.city.CityFragment;
-import com.stark.geekbrains_edu.service.WeatherService;
+import com.stark.geekbrains_edu.Reciever.ConnectedReceiver;
+import com.stark.geekbrains_edu.Reciever.PowerConnection;
+import com.stark.geekbrains_edu.presentation.StartScreen.StartScreenFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     MainPresenter mainPresenter = new MainPresenter();
-    private WeatherService serviceBinder;
-    private boolean isBound = false;
+
+    private ConnectedReceiver wiFiStateChange = new ConnectedReceiver();
+    private PowerConnection powerConnected = new PowerConnection();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        doBindService();
-        mainPresenter.onStart(getSupportFragmentManager(), R.id.frgmCont, new CityFragment());
-//        Intent intent = new Intent(this, WeatherService.class);
-//        bindService(intent, boundServiceConnection, Context.BIND_AUTO_CREATE);
+        mainPresenter.onStart(getSupportFragmentManager(), R.id.frgmCont, new StartScreenFragment());
+        registerBroadcastReceivers();
+        initNotificationChannel();
     }
 
-    void doBindService() {
-        bindService(new Intent(this, WeatherService.class), boundServiceConnection, Context.BIND_AUTO_CREATE);
-        isBound = true;
-    }
-
-    void doUnbindService() {
-        if (isBound) {
-            unbindService(boundServiceConnection);
-            isBound = false;
+    private void initNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            int importance = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel channel = new NotificationChannel("2", "name", importance);
+            notificationManager.createNotificationChannel(channel);
         }
     }
 
-    private ServiceConnection boundServiceConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            serviceBinder = ((WeatherService.ServiceBinder) service).getService();
-            isBound = serviceBinder != null;
-            assert serviceBinder != null;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            isBound = false;
-            serviceBinder = null;
-        }
-    };
+    private void registerBroadcastReceivers() {
+        registerReceiver(wiFiStateChange, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
+        registerReceiver(powerConnected, new IntentFilter(Intent.ACTION_POWER_CONNECTED));
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        doUnbindService();
+        unregisterReceiver(wiFiStateChange);
+        unregisterReceiver(powerConnected);
     }
+
+
 }

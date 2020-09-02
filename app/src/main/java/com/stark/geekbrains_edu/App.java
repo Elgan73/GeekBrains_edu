@@ -28,6 +28,7 @@ public class App extends Application {
                 WeatherDatabase.class,
                 "city_db")
                 .allowMainThreadQueries()
+                .fallbackToDestructiveMigration()
                 .build();
     }
 

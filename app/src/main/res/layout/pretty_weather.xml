@@ -3,17 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#D4E4E8"
-    >
+    android:background="#D4E4E8">
 
     <View
         android:id="@+id/viewPretty"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:background="@drawable/header_color"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageView
         android:id="@+id/settingsPretty"
@@ -25,11 +24,20 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"/>
 
+    <ImageView
+        android:id="@+id/historyWeather"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_weather_history_24"
+        app:layout_constraintTop_toTopOf="@id/settingsPretty"
+        app:layout_constraintEnd_toStartOf="@id/settingsPretty"
+        android:layout_marginEnd="20dp"/>
+
     <TextView
         android:id="@+id/cityPretty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Milan"
+        android:text=""
         android:textSize="30sp"
         android:textColor="@color/colorText"
         android:layout_marginStart="30dp"
@@ -44,14 +52,13 @@
         android:background="@drawable/city_arrow"
         app:layout_constraintStart_toEndOf="@id/cityPretty"
         app:layout_constraintTop_toTopOf="@id/cityPretty"
-        android:layout_marginTop="6dp"
-        />
+        android:layout_marginTop="6dp"/>
 
     <TextView
         android:id="@+id/datePretty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="17 november 2020 18:43"
+        android:text=""
         android:textColor="@color/colorText"
         app:layout_constraintTop_toBottomOf="@id/cityPretty"
         app:layout_constraintStart_toStartOf="@id/cityPretty"/>
@@ -61,7 +68,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorText"
-        android:text="+25"
+        android:text=""
         android:textSize="80sp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="80dp"
@@ -76,7 +83,7 @@
         app:layout_constraintStart_toStartOf="@id/viewPretty"
         android:textSize="30sp"
         android:textColor="@color/colorText"
-        android:text="Rainy Cloudy"
+        android:text=""
         android:layout_marginStart="30dp"/>
 
 
@@ -103,7 +110,7 @@
         android:id="@+id/perceivedPretty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="26"
+        android:text=""
         android:textSize="35sp"
         app:layout_constraintStart_toStartOf="@id/perceivedPrettyHint"
         app:layout_constraintBottom_toTopOf="@id/perceivedPrettyHint"
@@ -114,7 +121,7 @@
         android:id="@+id/humidityPretty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="75%"
+        android:text=""
         android:textSize="35sp"
         app:layout_constraintStart_toStartOf="@id/humidityPrettyHint"
         app:layout_constraintBottom_toTopOf="@id/humidityPrettyHint"
@@ -125,7 +132,7 @@
         android:id="@+id/windSpeedPretty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="5 m/s"
+        android:text=""
         android:textSize="35sp"
         app:layout_constraintStart_toStartOf="@id/windSpeedPrettyHint"
         app:layout_constraintBottom_toTopOf="@id/windSpeedPrettyHint"
@@ -136,12 +143,12 @@
         android:id="@+id/perceivedPrettyHint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Perceived"
+        android:text="@string/perceived"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@id/viewWithDetails"
-        app:layout_constraintStart_toStartOf="@id/viewWithDetails"
-        android:layout_marginStart="25dp"
-        android:layout_marginBottom="10dp"/>
+        app:layout_constraintEnd_toStartOf="@id/humidityPrettyHint"
+        app:layout_constraintTop_toTopOf="@id/humidityPrettyHint"
+        android:layout_marginEnd="60dp"
+        />
 
     <TextView
         android:id="@+id/humidityPrettyHint"
@@ -149,10 +156,12 @@
         android:layout_height="wrap_content"
         android:text="@string/Humidity"
         android:textSize="12sp"
+        app:layout_constraintTop_toTopOf="@id/viewWithDetails"
         app:layout_constraintBottom_toBottomOf="@id/viewWithDetails"
-        app:layout_constraintStart_toEndOf="@id/perceivedPrettyHint"
-        android:layout_marginStart="70dp"
-        android:layout_marginBottom="10dp"/>
+        app:layout_constraintStart_toStartOf="@id/viewWithDetails"
+        app:layout_constraintEnd_toEndOf="@id/viewWithDetails"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="20dp"/>
 
     <TextView
         android:id="@+id/windSpeedPrettyHint"
@@ -160,21 +169,9 @@
         android:layout_height="wrap_content"
         android:text="@string/WindSpeed"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@id/viewWithDetails"
         app:layout_constraintStart_toEndOf="@id/humidityPrettyHint"
-        android:layout_marginStart="70dp"
-        android:layout_marginBottom="10dp"/>
-
-<!--    <View-->
-<!--        android:id="@+id/moreDetails"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="250dp"-->
-<!--        android:background="@drawable/round_place"-->
-<!--        android:layout_marginStart="16dp"-->
-<!--        android:layout_marginEnd="16dp"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/viewWithDetails"-->
-<!--        android:layout_marginTop="16dp"/>-->
-
+        app:layout_constraintTop_toTopOf="@id/humidityPrettyHint"
+        android:layout_marginStart="60dp"/>
 
     <com.google.android.gms.maps.MapView
         xmlns:map="http://schemas.android.com/apk/res-auto"
@@ -191,11 +188,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
 
         android:focusable="true" />
-
-
-
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

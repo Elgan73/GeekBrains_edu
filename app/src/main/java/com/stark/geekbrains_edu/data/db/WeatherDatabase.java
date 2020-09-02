@@ -7,7 +7,7 @@ import com.stark.geekbrains_edu.data.db.Entity.EntityCity;
 import com.stark.geekbrains_edu.data.db.dao.WeatherDao;
 
 
-@Database(entities = {EntityCity.class}, version = 1, exportSchema = false)
+@Database(entities = {EntityCity.class}, version = 2)
 public abstract class WeatherDatabase extends RoomDatabase {
     public abstract WeatherDao getEntityDao();
 }
